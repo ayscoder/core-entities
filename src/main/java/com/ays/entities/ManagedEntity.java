@@ -7,16 +7,31 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
+ * This is base class for all entity object within platform
+ * Basic purpose is to have common fields like creation timestamp, lastModification timestamp and
+ * unique row id.
+ *
  * @author Ayush Agrahari created on 05/02/2021
+ * @since 2.0.x-x
  */
 @Entity
 public abstract class ManagedEntity implements Serializable {
 
+    /**
+     * row id
+     */
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     protected Long id;
 
+    /**
+     * record entry time stamp
+     */
     protected String createdTime;
+
+    /**
+     * record last modification time stamp
+     */
     protected String lastModifiedTime;
 
     public Long getId() {

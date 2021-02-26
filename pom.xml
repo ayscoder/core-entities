@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ays</groupId>
@@ -9,34 +10,39 @@
         <url>https://github.com/ayscoder/core-entities</url>
         <connection>scm:git:git://github.com/ayscoder/core-entities.git</connection>
         <developerConnection>scm:git:git@github.com:ayscoder/core-entities.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+        <maven.assembly.plugin.version>3.1.1</maven.assembly.plugin.version>
+        <artifactory>http://localhost:8081/artifactory</artifactory>
+        <javax.persistent.api.version>2.2</javax.persistent.api.version>
+        <lombok.version>1.18.18</lombok.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>javax.persistence-api</artifactId>
-            <version>2.2</version>
+            <version>${javax.persistent.api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.18</version>
+            <version>${lombok.version}</version>
         </dependency>
     </dependencies>
     <distributionManagement>
         <repository>
             <id>central</id>
-            <name>DESKTOP-49THCU4-releases</name>
-            <url>http://localhost:8081/artifactory/libs-release-local</url>
+            <name>central</name>
+            <url>${artifactory}/libs-release-local</url>
         </repository>
         <snapshotRepository>
             <id>snapshot</id>
-            <name>DESKTOP-49THCU4-snapshots</name>
-            <url>http://localhost:8081/artifactory/libs-snapshot-local</url>
+            <name>snapshot</name>
+            <url>${artifactory}/libs-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>
     <build>
@@ -44,23 +50,24 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
+                <version>${maven.release.plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.2</version>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven.assembly.plugin.version}</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
                 <executions>
                     <execution>
+                        <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>shade</goal>
+                            <goal>single</goal>
                         </goals>
-                        <configuration>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <minimizeJar>false</minimizeJar>
-                            <artifactSet />
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
